@@ -1,8 +1,9 @@
 import {LoginComponent} from './login.component';
 import {CommonModule} from '@angular/common';
-import {ReactiveFormsModule} from '@angular/forms';
+import {ReactiveFormsModule, FormsModule } from '@angular/forms';
 import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
+import {EffectsModule} from '@ngrx/effects';
 
 const routes: Routes = [
   {
@@ -21,6 +22,8 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     ReactiveFormsModule,
+    EffectsModule.forFeature(),
+    FormsModule
   ],
 })
 export class AuthModule {}

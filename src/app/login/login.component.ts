@@ -11,7 +11,7 @@ import {AppState} from '../shared/app.state';
 })
 export class LoginComponent implements OnInit {
   // @ts-ignore
-  loginForm: FormGroup;
+  loginForm!: FormGroup;
 
   constructor(private store: Store<AppState> ){ }
 
@@ -28,4 +28,5 @@ export class LoginComponent implements OnInit {
     const password  = this.loginForm.value.password;
     this.store.dispatch(login({username, password}));
   }
+
 }
