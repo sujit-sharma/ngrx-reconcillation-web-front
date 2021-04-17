@@ -17,7 +17,7 @@ export class AuthEffect {
     return this.authService.login(acts.username, acts.password)
       .pipe(
         map((data) => {
-          console.log('login service returned');
+          this.authService.persistToken(data.token);
           return loginSuccess(data);
         }),
       );

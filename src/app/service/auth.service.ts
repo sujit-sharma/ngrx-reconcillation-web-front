@@ -4,6 +4,7 @@ import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {AuthResponse} from '../model/auth-response.model';
 import {environment} from '../../environments/environment';
+import {AppState} from '../shared/app.state';
 
 
 @Injectable({
@@ -12,7 +13,7 @@ import {environment} from '../../environments/environment';
 
 export class AuthService {
   constructor(private http: HttpClient,
-              private store: Store<any>
+              private store: Store<AppState>
   ) {}
   login(username: string, password: string): Observable<AuthResponse> {
     return this.http.get<AuthResponse>(
@@ -20,4 +21,7 @@ export class AuthService {
     );
   }
 
+  persistToken(token: string): void {
+    localStorage.setItem('jwt_token', token);
+  }
 }

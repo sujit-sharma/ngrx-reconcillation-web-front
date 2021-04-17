@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Store} from '@ngrx/store';
 import {login} from './state/auth.action';
+import {AppState} from '../shared/app.state';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ export class LoginComponent implements OnInit {
   // @ts-ignore
   loginForm: FormGroup;
 
-  constructor(private store: Store<any> ){ }
+  constructor(private store: Store<AppState> ){ }
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
