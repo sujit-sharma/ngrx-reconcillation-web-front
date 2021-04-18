@@ -53,4 +53,15 @@ export class AuthService {
 
 
   }
+
+  getErrorMeassage(message: string): string {
+    switch (message) {
+      case 'Login successful':
+        return 'Successfully Login';
+      case 'Invalid username or password':
+        return 'Password or username is incorrect';
+      default:
+        return 'An error occurs while processing login';
+    }
+  }
 }
