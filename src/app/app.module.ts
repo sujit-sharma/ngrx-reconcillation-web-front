@@ -12,13 +12,15 @@ import {StoreModule} from '@ngrx/store';
 import {appReducer} from './shared/app.state';
 import {environment} from '../environments/environment';
 import {EffectsModule} from '@ngrx/effects';
+import { LoadingSpinnerComponent } from './shared/components/loading-spinner/loading-spinner.component';
 import {AuthEffect} from './login/state/auth.effect';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    HomeComponent
+    HomeComponent,
+    LoadingSpinnerComponent,
   ],
     imports: [
         BrowserModule,
