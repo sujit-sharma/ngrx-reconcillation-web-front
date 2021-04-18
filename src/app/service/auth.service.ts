@@ -64,4 +64,9 @@ export class AuthService {
         return 'An error occurs while processing login';
     }
   }
+
+  formatLoginResponse(data: AuthResponse): AuthResponse {
+    const authResponse = new AuthResponse(data.message, data.token);
+    return authResponse;
+  }
 }

@@ -21,11 +21,11 @@ export class AuthEffect {
   return this.action$.pipe(ofType(login), mergeMap((acts) => {
     return this.authService.login(acts.username, acts.password)
       .pipe(
-        map((data) => {
+        map((authResponse) => {
           this.store.dispatch(setLoadingSpinner({status: false}));
           this.store.dispatch(setErrorMessage({message: ''}));
-          this.authService.persistToken(data.token);
-          return loginSuccess(data);
+          this.authService.persistToken(authResponse.token);
+          return loginSuccess({authResponse, redirect: true} );
         }),
         catchError((err => {
           this.store.dispatch(setLoadingSpinner({ status: false }));
@@ -44,7 +44,9 @@ export class AuthEffect {
         ofType(loginSuccess),
         tap(( action ) => {
           this.store.dispatch(setErrorMessage({message: ''}));
-          this.router.navigate(['/']);
+          if (action.redirect) {
+            this.router.navigate(['/']);
+          }
         })
         );
     },
