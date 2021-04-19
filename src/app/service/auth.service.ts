@@ -72,21 +72,19 @@ export class AuthService {
     const expiresDate  = this.getTokenExpireTime(decodedToken);
     const timeInterval = expiresDate - nowDate;
     setTimeout(() => {
-      alert('You are idle for a while and get auto logout');
       this.store.dispatch(logout());
+      alert('You are idle for a while and get auto logout');
     }, this.timeoutInterval = timeInterval );
   }
-
-  formatLoginResponse(data: AuthResponse): AuthResponse {
-    const authResponse = new AuthResponse(data.message, data.token);
-    return authResponse;
-  }
-
   logout(): void {
     localStorage.removeItem('token');
     if (this.timeoutInterval) {
       clearTimeout(this.timeoutInterval);
       this.timeoutInterval = null;
     }
+  }
+
+  getPersistToken(): string {
+    return localStorage.getItem('token');
   }
 }

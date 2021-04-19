@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {createEffect, ofType, Actions} from '@ngrx/effects';
-import {login, loginSuccess, logout} from './auth.action';
+import {autoLogin, login, loginSuccess, logout} from './auth.action';
 import {catchError, map, mergeMap, tap} from 'rxjs/operators';
 import {AuthService} from '../../service/auth.service';
 import {Store} from '@ngrx/store';
@@ -41,6 +41,17 @@ export class AuthEffect {
   })
   );
 });
+  autoLogin$ = createEffect(() => {
+    return this.action$.pipe(
+      ofType(autoLogin),
+      mergeMap((action) => {
+        const token = this.authService.getPersistToken();
+        this.authService.runTimeoutInterval(token);
+        return of(loginSuccess({token, redirect: false}));
+      })
+    );
+  },
+  );
   loginRedirect$ = createEffect(
     () => {
       return this.action$.pipe(
