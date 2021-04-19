@@ -7,6 +7,7 @@ import {environment} from '../../environments/environment';
 import {AppState} from '../shared/app.state';
 
 import jwt_decode from 'jwt-decode';
+import {logout} from '../login/state/auth.action';
 
 
 @Injectable({
@@ -14,6 +15,7 @@ import jwt_decode from 'jwt-decode';
 })
 
 export class AuthService {
+  private timeoutInterval: number;
   constructor(private http: HttpClient,
               private store: Store<AppState>
   ) {}
@@ -54,7 +56,7 @@ export class AuthService {
 
   }
 
-  getErrorMeassage(message: string): string {
+  getErrorMessage(message: string): string {
     switch (message) {
       case 'Login successful':
         return 'Successfully Login';
@@ -64,6 +66,16 @@ export class AuthService {
         return 'An error occurs while processing login';
     }
   }
+  runTimeoutInterval(token: string): void {
+    const nowDate = new Date().getTime();
+    const decodedToken = this.jwtDecode(token);
+    const expiresDate  = this.getTokenExpireTime(decodedToken);
+    const timeInterval = expiresDate - nowDate;
+    setTimeout(() => {
+      alert('You are idle for a while and get auto logout');
+      this.store.dispatch(logout());
+    }, this.timeoutInterval = timeInterval );
+  }
 
   formatLoginResponse(data: AuthResponse): AuthResponse {
     const authResponse = new AuthResponse(data.message, data.token);
@@ -71,6 +83,10 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('jwt_token');
+    localStorage.removeItem('token');
+    if (this.timeoutInterval) {
+      clearTimeout(this.timeoutInterval);
+      this.timeoutInterval = null;
+    }
   }
 }

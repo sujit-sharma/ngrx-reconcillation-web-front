@@ -27,13 +27,14 @@ export class AuthEffect {
           this.store.dispatch(setErrorMessage({message: ''}));
           const token = authResponse.token;
           this.authService.persistToken(token);
+          this.authService.runTimeoutInterval(token);
           return loginSuccess({token, redirect: true});
         }),
         catchError((err => {
           this.store.dispatch(setLoadingSpinner({ status: false }));
           console.log('catch block ');
           console.log(err.error.message);
-          const errorMessage = this.authService.getErrorMeassage(err.error.message);
+          const errorMessage = this.authService.getErrorMessage(err.error.message);
           return of(setErrorMessage({message: errorMessage}));
         }))
       );
