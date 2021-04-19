@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {AppState} from './shared/app.state';
-import {getLoading} from './shared/state/shared.selector';
+import {getErrorMessage, getLoading} from './shared/state/shared.selector';
 
 @Component({
   selector: 'app-root',
@@ -12,10 +12,11 @@ import {getLoading} from './shared/state/shared.selector';
 export class AppComponent implements OnInit {
   title = 'ngrx-reconciliation-web-front';
   showLoading: Observable<boolean>;
+  errorMessage: Observable<string>;
   constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
     this.showLoading = this.store.select(getLoading);
-    // console.log(this.showLoading.subscribe());
+    this.errorMessage = this.store.select(getErrorMessage);
   }
 }

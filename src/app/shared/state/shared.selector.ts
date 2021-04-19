@@ -9,3 +9,7 @@ const getSharedState = createFeatureSelector<SharedState>(SHARED_STATE_NAME);
 export const getLoading = createSelector(getSharedState, (state: SharedState) => {
   return state.showLoadingSpinner;
 });
+
+export const getErrorMessage = createSelector(getSharedState, (state: SharedState) => {
+  return state.errorMessage;
+});
