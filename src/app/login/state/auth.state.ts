@@ -1,7 +1,7 @@
 
 export interface AuthState {
-  jwt_token: string;
+  token: string;
 }
 export const initialState: AuthState = {
-  jwt_token: '',
+  token: '',
 };

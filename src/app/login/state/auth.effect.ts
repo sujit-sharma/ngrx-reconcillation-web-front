@@ -1,12 +1,13 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {createEffect, ofType, Actions} from '@ngrx/effects';
-import {login, loginSuccess} from './auth.action';
+import {login, loginSuccess, logout} from './auth.action';
 import {catchError, map, mergeMap, tap} from 'rxjs/operators';
 import {AuthService} from '../../service/auth.service';
 import {Store} from '@ngrx/store';
 import {setErrorMessage, setLoadingSpinner} from '../../shared/state/shared.action';
 import {of} from 'rxjs';
+import {AuthResponse} from '../../model/auth-response.model';
 
 @Injectable()
 export class AuthEffect {
@@ -21,11 +22,12 @@ export class AuthEffect {
   return this.action$.pipe(ofType(login), mergeMap((acts) => {
     return this.authService.login(acts.username, acts.password)
       .pipe(
-        map((authResponse) => {
+        map((authResponse: AuthResponse) => {
           this.store.dispatch(setLoadingSpinner({status: false}));
           this.store.dispatch(setErrorMessage({message: ''}));
-          this.authService.persistToken(authResponse.token);
-          return loginSuccess({authResponse, redirect: true} );
+          const token = authResponse.token;
+          this.authService.persistToken(token);
+          return loginSuccess({token, redirect: true});
         }),
         catchError((err => {
           this.store.dispatch(setLoadingSpinner({ status: false }));
@@ -52,4 +54,13 @@ export class AuthEffect {
     },
     {dispatch: false }
   );
+  logout$ = createEffect( () => {
+    return this.action$.pipe(
+      ofType(logout),
+      map(() => {
+        this.authService.logout();
+        this.router.navigate(['auth']);
+      })
+    );
+  }, {dispatch: false});
 }

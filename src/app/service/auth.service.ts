@@ -24,7 +24,7 @@ export class AuthService {
   }
 
   persistToken(token: string): void {
-    localStorage.setItem('jwt_token', token);
+    localStorage.setItem('token', token);
   }
 
   isLoggedIn(): boolean {
@@ -33,7 +33,7 @@ export class AuthService {
   }
 
   private isTokenValid(): boolean {
-    const token = localStorage.getItem('jwt_token');
+    const token = localStorage.getItem('token');
     if (token) {
       const decodedToken: object = this.jwtDecode(token);
       const expiryTime: number = this.getTokenExpireTime(decodedToken);
@@ -68,5 +68,9 @@ export class AuthService {
   formatLoginResponse(data: AuthResponse): AuthResponse {
     const authResponse = new AuthResponse(data.message, data.token);
     return authResponse;
+  }
+
+  logout(): void {
+    localStorage.removeItem('jwt_token');
   }
 }
