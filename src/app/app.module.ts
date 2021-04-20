@@ -15,6 +15,7 @@ import {EffectsModule} from '@ngrx/effects';
 import { LoadingSpinnerComponent } from './shared/components/loading-spinner/loading-spinner.component';
 import {AuthEffect} from './login/state/auth.effect';
 import {AuthInterceptor} from './auth/auth.interceptor';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import {AuthInterceptor} from './auth/auth.interceptor';
     HeaderComponent,
     HomeComponent,
     LoadingSpinnerComponent,
+    NotFoundComponent,
   ],
     imports: [
         BrowserModule,
