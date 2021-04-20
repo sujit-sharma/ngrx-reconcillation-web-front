@@ -12,14 +12,15 @@ export class AuthInterceptor implements HttpInterceptor {
 
   constructor() {}
 
-  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.needSkip(request.url)) {
       console.log('skipped by Interceptor for ' + request.url);
       return next.handle(request);
     }
     const authorizedRequest = request.clone( {
       setHeaders: {
-        Authorization: `${localStorage.getItem('token')}`,
+        Authorization: `${localStorage.getItem('authToken')}`,
+
       }
     });
     console.log('Authorization token added in request by Interceptor');
